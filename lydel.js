@@ -3,43 +3,32 @@ const url = require('url');
 const fs = require('fs');
 
 http.createServer(function (request, respond) {
+
+	var page = [
+		'accueil', 
+		'parametres', 
+		'identification', 
+		'nouveau_compte', 
+		'nouvel_article'
+	];
+
   var pathname = url.parse(request.url).pathname;
-  if (pathname == "/accueil") {
-      fs.readFile('accueil.html', function(err, data) {
-        respond.writeHead(200, {'Content-Type': 'text/html'});
-        respond.write(data);
-        respond.end();
-      });
 
-  } else if (pathname == "/parametres")  {
-      fs.readFile('parametres.html', function(err, data) {
-        respond.writeHead(200, {'Content-Type': 'text/html'});
-        respond.write(data);
-        respond.end();
-      });
+	var page_lue = false;
 
-  } else if (pathname == "/identification")  {
-      fs.readFile('identification.html', function(err, data) {
-        respond.writeHead(200, {'Content-Type': 'text/html'});
-        respond.write(data);
-        respond.end();
-      });
+	console.log(pathname);
+	for (var i = 0; i < page.length; i++) {
+		if (pathname == "/" + page[i]) {
+				fs.readFile(page[i] + '.html', function(err, data) {
+					respond.writeHead(200, {'Content-Type': 'text/html'});
+					respond.write(data);
+					respond.end();
+				});
+				page_lue = true;
+		}
+	}
 
-  } else if (pathname == "/nouveau_compte")  {
-      fs.readFile('nouveauCompte.html', function(err, data) {
-        respond.writeHead(200, {'Content-Type': 'text/html'});
-        respond.write(data);
-        respond.end();
-      });
-
-  } else if (pathname == "/nouvel_article")  {
-      fs.readFile('nouvelArticle.html', function(err, data) {
-        respond.writeHead(200, {'Content-Type': 'text/html'});
-        respond.write(data);
-        respond.end();
-      });
-
-  } else {
+  if (page_lue == false) {
         respond.writeHead(404)
         respond.end("passe ton chemin, bro")
       }
